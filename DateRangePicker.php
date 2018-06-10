@@ -1,20 +1,16 @@
 <?php
-
 /**
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2015 - 2018
  * @package yii2-date-range
  * @version 1.6.9
  */
-
 namespace kartik\daterange;
-
 use kartik\base\InputWidget;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\JsExpression;
-
 /**
  * An advanced date range picker input for Yii Framework 2 based on bootstrap-daterangepicker plugin.
  *
@@ -30,14 +26,12 @@ class DateRangePicker extends InputWidget
      * to `false`. If you set a value here it will override any auto-generated callbacks.
      */
     public $callback = null;
-
     /**
      * @var boolean whether to auto update the input on initialization. If set to `false`, this will auto set the
      * `pluginOptions['autoUpdateInput']` to `false`. A default [[callback]] will be auto-generated when this is set to
      * `false`.
      */
     public $autoUpdateOnInit = false;
-
     /**
      * @var boolean whether to hide the input (e.g. when you want to show the date range picker as a dropdown). If set
      * to `true`, the input will be hidden. The plugin will be initialized on a container element (default 'div'),
@@ -45,33 +39,28 @@ class DateRangePicker extends InputWidget
      * value within the container.
      */
     public $hideInput = false;
-
     /**
      * @var boolean whether you are using the picker with a input group addon. You can set it to `true`, when
      * `hideInput` is false, and you wish to show the picker position more correctly at the input-group-addon icon.
      * A default `callback` will be generated in this case to generate the selected range value for the input.
      */
     public $useWithAddon = false;
-
     /**
      * @var boolean initialize all the list values set in `pluginOptions['ranges']` and convert all values to
      * `yii\web\JsExpression`
      */
     public $initRangeExpr = true;
-
     /**
      * @var boolean show a preset dropdown. If set to true, this will automatically generate a preset list of ranges
      * for selection. Setting this to true will also automatically set `initRangeExpr` to true.
      */
     public $presetDropdown = false;
-
     /**
      * @var array the HTML attributes for the container, if hideInput is set to true. The following special options
      * are recognized:
      * - `tag`: string, the HTML tag for rendering the container. Defaults to `div`.
      */
     public $containerOptions = [];
-
     /**
      * @var string the attribute name which you can set optionally to track changes to the range start value. One of
      * the following actions will be taken when this is set:
@@ -81,7 +70,6 @@ class DateRangePicker extends InputWidget
      *     for the start value of the range.
      */
     public $startAttribute;
-
     /**
      * @var string the attribute name which you can set optionally to track changes to the range end value. One of
      * the following actions will be taken when this is set:
@@ -91,19 +79,16 @@ class DateRangePicker extends InputWidget
      *     for the end value of the range.
      */
     public $endAttribute;
-
     /**
      * @var array the HTML attributes for the start input (applicable only if `startAttribute` is set). If using
      * without a model, you can set a start value here within the `value` property.
      */
     public $startInputOptions = [];
-
     /**
      * @var array the HTML attributes for the end input (applicable only if `endAttribute` is set).  If using
      * without a model, you can set an end value here within the `value` property.
      */
     public $endInputOptions = [];
-
     /**
      * @var array the template for rendering the container, when hideInput is set to `true`. The special tag `{input}`
      * will be replaced with the hidden form input. In addition, the element with css class `range-value` will be
@@ -118,54 +103,44 @@ class DateRangePicker extends InputWidget
         </div>
         {input}
 HTML;
-
     /**
      * @var boolean whether to HTML encode the value
      */
     public $encodeValue = true;
-
     /**
      * HTML attributes for the `span` element that displays the default value for a preset dropdown. By default for a
      * preset dropdown, if the value is empty, it will default to "Today". The following special options are supported:
      * - `tag`: the HTML tag under which the default value markup will be displayed when empty. Defaults to `em`.
      */
     public $defaultPresetValueOptions = ['class' => 'text-muted'];
-
     /**
      * @var array the HTML attributes for the form input
      */
     public $options = ['class' => 'form-control'];
-
     /**
      * @inheritdoc
      */
     public $pluginName = 'daterangepicker';
-
     /**
      * @var string locale language to be used for the plugin
      */
     protected $_localeLang = '';
-
     /**
      * @var string the pluginOptions format for the date time
      */
     protected $_format;
-
     /**
      * @var string the pluginOptions separator
      */
     protected $_separator;
-
     /**
      * @var string the generated input for start attribute when `startAttribute` has been set
      */
     protected $_startInput = '';
-
     /**
      * @var string the generated input for end attribute when `endAttribute` has been set
      */
     protected $_endInput = '';
-
     /**
      * Automatically convert the date format from PHP DateTime to Moment.js DateTime format as required by the
      * `bootstrap-daterangepicker` plugin.
@@ -225,7 +200,6 @@ HTML;
         ];
         return strtr($format, $conversions);
     }
-
     /**
      * Parses and returns a JsExpression
      *
@@ -237,7 +211,6 @@ HTML;
     {
         return $value instanceof JsExpression ? $value : new JsExpression($value);
     }
-
     /**
      * @inheritdoc
      */
@@ -246,7 +219,6 @@ HTML;
         $this->initSettings();
         echo $this->renderInput();
     }
-
     /**
      * Registers the needed client assets
      */
@@ -270,7 +242,7 @@ HTML;
                 $val = "start.format('{$this->_format}')";
             }
             $rangeJs = $this->getRangeJs('start') . $this->getRangeJs('end');
-            $change = $rangeJs . "{$input}.val(val).trigger('change');";
+            $change = "{$input}.val(val).trigger('change');". $rangeJs ;
             if ($this->presetDropdown) {
                 $id = "{$id}.find('.kv-drp-dropdown')";
             }
@@ -312,7 +284,6 @@ JS;
         $view->registerJs($js);
         $this->registerPlugin($this->pluginName, $id, null, $this->callback);
     }
-
     /**
      * Initializes widget settings
      *
@@ -356,7 +327,6 @@ JS;
         }
         $value = empty($this->value) ? '' : $this->value;
         $this->containerTemplate = str_replace('{value}', $value, $this->containerTemplate);
-
         // Set `autoUpdateInput` to false for certain settings
         if (!$this->autoUpdateOnInit || $this->hideInput || $this->useWithAddon) {
             $this->pluginOptions['autoUpdateInput'] = false;
@@ -373,7 +343,6 @@ JS;
         $this->initRange();
         $this->registerAssets();
     }
-
     /**
      * Initialize locale settings
      */
@@ -397,7 +366,6 @@ JS;
         ];
         $this->pluginOptions['locale'] = $localeSettings;
     }
-
     /**
      * Initializes the pluginOptions range list
      */
@@ -445,7 +413,6 @@ JS;
         }
         $this->pluginOptions['ranges'] = $range;
     }
-
     /**
      * Renders the input
      *
@@ -461,7 +428,6 @@ JS;
         $tag = ArrayHelper::remove($this->containerOptions, 'tag', 'div');
         return Html::tag($tag, $content, $this->containerOptions);
     }
-
     /**
      * Gets input options based on type
      *
@@ -474,7 +440,6 @@ JS;
         $opts = $type . 'InputOptions';
         return isset($this->$opts) && is_array($this->$opts) ? $this->$opts : [];
     }
-
     /**
      * Sets input options for a specific type
      *
@@ -488,7 +453,6 @@ JS;
             $this->$opts = $options;
         }
     }
-
     /**
      * Gets the range attribute value based on type
      *
@@ -501,7 +465,6 @@ JS;
         $attr = $type . 'Attribute';
         return $type && isset($this->$attr) ? $this->$attr : '';
     }
-
     /**
      * Generates and returns the client script on date range change, when the start and end attributes are set
      *
@@ -520,7 +483,6 @@ JS;
         return "var v={$input}.val() ? {$type}.format('{$this->_format}') : '';jQuery('#" . $options['id'] .
             "').val(v).trigger('change');";
     }
-
     /**
      * Generates and returns the hidden input markup when one of start or end attributes are set.
      *
@@ -547,7 +509,6 @@ JS;
         $this->setInputOpts($type, $options);
         return Html::tag('input', '', $options);
     }
-
     /**
      * Initializes the range values when one of start or end attributes are set.
      *
@@ -568,7 +529,6 @@ JS;
             $this->setInputOpts($type, $options);
         }
     }
-
     /**
      * Generates and returns the hidden input markup when one of start or end attributes are set.
      *
